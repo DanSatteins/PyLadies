@@ -26,6 +26,7 @@ def evaluate(pc_move, player_move):
         elif board == board == "---------------xxx--"
         elif board == board == "----------------xxx-"
         elif board == board == "-----------------xxx"
+        evalute =
             print("Congrats, the player has won!")
     else: 
         elif board == board == "-ooo----------------"
