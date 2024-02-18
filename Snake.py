@@ -1,26 +1,36 @@
-# Final project - Snake game using the turtle module
-# Information special for the turtle module I took from https://docs.python.org/3/library/turtle.html.
+# Final project - Snake game using the turtle module!
+# The information regarding the turtle module I took from https://docs.python.org/3/library/turtle.html.
 
 # Import necessary modules.
-import turtle as t # With this, I can import the whole turtle module without the danger of confusing functions.
-# By placing "t." in front, it's clear that this refers to the turtle module.
+import turtle as t  # With this, I can import the whole turtle module without the danger of confusing functions.
+                    # By placing "t." in front, it's clear that this refers to the turtle module.
 import random as r
-import time # I need this module to give the user time to press the control buttons. Without, the snake just runs out of the field.
-
-# Step 1 - create playing field, snake and food.
+import time         # I need this module to give the user time to press the control buttons. Without, the snake just runs out of the field.
 
 # Create the playing field.
 field = t.Screen()
-field.title("Welcome to my snake game. Please press '2' to go down, '4' to turn left, '6' to turn right, '8' to go up or 'end' to stop playing.")
+field.title("Welcome to my snake game. Please press '2' to go down, '4' to turn left, '6' to turn right, '8' to go up or 'e' to stop playing.")
 field.bgcolor("white")
 field.screensize(500, 500)
 
 # Create snake and place it in the center of the field.
 snake = t.Turtle()
+snake.shape("classic")
+snake.color("black")
+snake.penup()
+snake.goto(260, 260)
+snake.pendown()
+snake.goto(260, -260)
+snake.goto(-260, -260)
+snake.goto(-260, 260)
+snake.goto(260, 260)
+snake.hideturtle()
+
 snake.shape("square")
 snake.color("red")
 snake.penup()
 snake.goto(0, 0)
+snake.showturtle()
 snake.direction = "right"
 
 # Create snake food and place it in initial position.
@@ -30,9 +40,13 @@ snake_food.color("green")
 snake_food.penup()
 snake_food.goto(50, 50)
 
-snake_body = []  # Create an empty list for snake body.
+# Create an empty list for snake body.
+snake_body = []  
 
-# Step 2 - create direction functions.
+# Set initial score to 0.
+score = 0
+
+# Create direction functions. 
 # These functions prevent the snake from turning 180 degrees. I took me endless hours and a hint to get this solution.
 def go_down():
     if snake.direction != "up":
@@ -51,7 +65,7 @@ def turn_right():
         snake.direction = "right"
 
 def end_game():
-    t.write("You hit 'e' to end the game.", True, align="center")
+    t.write("You hit 'e' to end the game. Your score is {} fruit.".format(score), align="center", font=("Arial", 16, "normal"))
     t.mainloop()
 
 # Define how the movement shall take place. I used the turtle instrucions for "xcor", "ycor", "setx", "sety".
@@ -80,30 +94,33 @@ field.onkeypress(turn_right, "6")
 field.onkeypress(go_up, "8")
 field.onkeypress(end_game, "e")
 
-# Step 3 - define losing conditions and gameplay.
+# Define losing conditions and gameplay.
 while True:
     field.update()
 
-    # Check if the snake hits the wall. 249 is half of the 500 field size.
-    if (snake.xcor() > 249 
-        or snake.xcor() < -249 
-        or snake.ycor() > 249 
-        or snake.ycor() < -249):
-        t.write("The snake hit the wall, you lose.", True, align="center")
+    # Check if the snake hits the wall.
+    if (snake.xcor() > 240 
+        or snake.xcor() < -240 
+        or snake.ycor() > 240 
+        or snake.ycor() < -240):
+        t.write("The snake hit the wall, you lose. Your score is {} fruit.".format(score), align="center", font=("Arial", 16, "normal"))
         t.mainloop()
              
     # Define distance for the snake to eat the food. Position new snake food in random places, but not too close to the wall.
     if snake.distance(snake_food) < 20:
+        snake_food.hideturtle()
         snake_food.penup()
-        snake_food.goto(r.randint(-240, 240), r.randint(-240, 240))
+        snake_food.goto(r.randint(-230, 230), r.randint(-230, 230))
+        snake_food.showturtle()
 
-    # Snake growth design and append to snake body.
+        # Snake growth design and append to snake body.
         snake_grow = t.Turtle()
         snake_grow.shape("square")
         snake_grow.color("black")
         snake_grow.penup()
         snake_body.append(snake_grow)
-
+        score = (score + 1)
+ 
     # Set the snake into motion.
     move_snake()
 
@@ -124,7 +141,7 @@ while True:
     # Check for collision of the snake with itself.
     for segment in snake_body[1:]:
         if snake.distance(segment) < 10:
-            t.write("The snake bit itself, you lose.", True, align="center")
+            t.write("The snake bit itself, you lose. Your score is {} fruit.".format(score), align="center", font=("Arial", 16, "normal"))
             #t.write((0,0), True)
             t.mainloop()
 
