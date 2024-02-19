@@ -2,8 +2,7 @@
 # The information regarding the turtle module I took from https://docs.python.org/3/library/turtle.html.
 
 # Import necessary modules.
-import turtle as t  # With this, I can import the whole turtle module without the danger of confusing functions.
-                    # By placing "t." in front, it's clear that this refers to the turtle module.
+import turtle as t  # With this and by placing "t" in front, I can import the whole turtle module without the danger of confusing functions.
 import random as r
 import time         # I need this module to give the user time to press the control buttons. Without, the snake just runs out of the field.
 
@@ -23,7 +22,7 @@ game_control.write("Please press '2' to go down, '4' to turn left,".format(), al
 game_control.setposition(0, 275)
 game_control.write("'6' to turn right, '8' to go up or 'e' to stop playing.".format(), align="center", font=("Arial", 16, "normal"))
 
-# Create snake and place it in the center of the field.
+# Use the (hidden) snake to great a frame delimiting the playing field.
 snake = t.Turtle()
 snake.shape("classic")
 snake.color("black")
@@ -37,6 +36,7 @@ snake.goto(-260, 260)
 snake.goto(260, 260)
 snake.hideturtle()
 
+# Create snake head and place it in the center of the field.
 snake.shape("square")
 snake.color("red")
 snake.penup()
@@ -97,7 +97,8 @@ def move_snake():
         x = snake.xcor()
         snake.setx(x + 10)
 
-# Set up key bindings. I opted for numbers because it seems more convenient using the numerical pad.
+# Set up key bindings, defining which keys to use to move the snake or end the game. 
+# I opted for numbers because it seems more convenient using the numerical pad.
 field.listen()
 field.onkeypress(go_down, "2")
 field.onkeypress(turn_left, "4")
@@ -124,7 +125,7 @@ while True:
         snake_food.goto(r.randint(-230, 230), r.randint(-230, 230))
         snake_food.showturtle()
 
-        # Snake growth design and append to snake body.
+        # Snake growth design and append to snake body. Increase score for each fruit eaten.
         snake_grow = t.Turtle()
         snake_grow.shape("square")
         snake_grow.color("black")
@@ -132,7 +133,7 @@ while True:
         snake_body.append(snake_grow)
         score = (score + 1)
  
-    # Set the snake into motion.
+    # Set the snake into motion, start gameplay.
     move_snake()
 
     # Find x and y position -1 of the body segments, from the last to the first. Move new segment to x and y coordinates.
@@ -153,7 +154,6 @@ while True:
     for segment in snake_body[1:]:
         if snake.distance(segment) < 10:
             t.write("The snake bit itself, you lose. Your score is {} fruit.".format(score), align="center", font=("Arial", 16, "normal"))
-            #t.write((0,0), True)
             t.mainloop()
 
     # Delay needed to give the user time to control the game. Also taken from https://gist.github.com/wynand1004/ec105fd2f457b10d971c09586ec44900.
