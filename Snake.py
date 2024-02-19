@@ -9,15 +9,26 @@ import time         # I need this module to give the user time to press the cont
 
 # Create the playing field.
 field = t.Screen()
-field.title("Welcome to my snake game. Please press '2' to go down, '4' to turn left, '6' to turn right, '8' to go up or 'e' to stop playing.")
+field.title("Welcome to Dani's snake game.")
 field.bgcolor("white")
 field.screensize(500, 500)
+
+# Add text explaning the user how to control the game. Used turtle instructions for help.
+game_control = t.Turtle()
+game_control.color("blue")
+game_control.penup()
+game_control.hideturtle()
+game_control.setposition(0, 300)
+game_control.write("Please press '2' to go down, '4' to turn left,".format(), align="center", font=("Arial", 16, "normal"))
+game_control.setposition(0, 275)
+game_control.write("'6' to turn right, '8' to go up or 'e' to stop playing.".format(), align="center", font=("Arial", 16, "normal"))
 
 # Create snake and place it in the center of the field.
 snake = t.Turtle()
 snake.shape("classic")
 snake.color("black")
 snake.penup()
+snake.hideturtle()
 snake.goto(260, 260)
 snake.pendown()
 snake.goto(260, -260)
